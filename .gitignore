@@ -6,7 +6,7 @@
 
 .gradle/
 build/
-
+the.jar
 
 # Node artifact files
 node_modules/

@@ -78,11 +78,16 @@ class ProcessClassFiles {
     }
 
     private fun processClass(inFile: File, outFile: File) {
+        val outFileTmp = File(outFile.absolutePath + "_tmp")
         val inStream = FileInputStream(inFile.absolutePath)
-        val outStream = FileOutputStream(outFile)
+        val outStream = FileOutputStream(outFileTmp)
         processClass(inFile.path, inStream, outStream)
         outStream.flush()
         outStream.close()
+        if (outFile.isFile) {
+            outFile.delete()
+        }
+        outFileTmp.renameTo(outFile)
     }
 
     // Open and close all streams outside!

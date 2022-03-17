@@ -10,11 +10,15 @@ public class Privateer {
         this.odd = odd;
     }
 
+    private Privateer(int abc, boolean odd, int unused) {
+        this(abc, odd);
+    }
+
     final static private Privateer privateFactory(int abc) {
         if (0 == (1 & abc)) {
             return new Privateer(abc, true);
         } else {
-            return new Privateer(abc, false);
+            return new Privateer(abc, false, 0);
         }
     }
 
