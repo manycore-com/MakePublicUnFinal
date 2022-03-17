@@ -6,7 +6,9 @@ import org.jf.dexlib2.Opcode
 import org.jf.dexlib2.Opcodes
 import org.jf.dexlib2.builder.MutableMethodImplementation
 import org.jf.dexlib2.builder.instruction.BuilderInstruction35c
+import org.jf.dexlib2.builder.instruction.BuilderInstruction3rc
 import org.jf.dexlib2.dexbacked.instruction.DexBackedInstruction35c
+import org.jf.dexlib2.dexbacked.instruction.DexBackedInstruction3rc
 import org.jf.dexlib2.dexbacked.reference.DexBackedMethodReference
 import org.jf.dexlib2.iface.ClassDef
 import org.jf.dexlib2.iface.Field
@@ -204,6 +206,12 @@ class ProcessDexFiles {
                 val iinstr = instr as DexBackedInstruction35c
                 if ((iinstr.reference as DexBackedMethodReference).name != "<init>") {
                     val newInstruction = BuilderInstruction35c(Opcode.INVOKE_VIRTUAL, iinstr.registerCount, iinstr.registerC, iinstr.registerD, iinstr.registerE, iinstr.registerF, iinstr.registerG, iinstr.reference)
+                    mmi.replaceInstruction(index, newInstruction)
+                }
+            } else if (instr.opcode.name.equals("invoke-direct/range")) {
+                val iinstr = instr as DexBackedInstruction3rc
+                if ((iinstr.reference as DexBackedMethodReference).name != "<init>") {
+                    val newInstruction = BuilderInstruction3rc(Opcode.INVOKE_VIRTUAL_RANGE, iinstr.startRegister, iinstr.registerCount, iinstr.reference)
                     mmi.replaceInstruction(index, newInstruction)
                 }
             }

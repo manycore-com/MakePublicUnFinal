@@ -44,4 +44,33 @@ class ProcessDexFilesTest {
         outputDir.deleteRecursively()
     }
 
+    @Test
+    fun testEnsureContentInsets() {
+
+        val outputDir = File("src/test/kotlin/io/manycore/dexesOut")
+        if (outputDir.exists()) {
+            outputDir.deleteRecursively()
+        }
+        outputDir.mkdirs()
+
+        val p = ProcessDexFiles(File("src/test/kotlin/io/manycore/dexesContentInsetsBug"), outputDir, 14)
+        p.process()
+
+        val dexes = Dexes(outputDir, 14)
+        val cd = dexes.lookup("androidx.appcompat.widget.Toolbar")
+        var testedPrivateTest = false
+        for (m in cd.methods) {
+            if (m.name == "<init>") {
+                val codeAsStrings = PrettyPrint.prettyPrintMethod(m!!)
+                for (s in codeAsStrings) {
+                    println(s)
+                }
+            }
+        }
+
+        //Assertions.assertEquals(true, testedPrivateTest)
+        outputDir.deleteRecursively()
+    }
+
+
 }
