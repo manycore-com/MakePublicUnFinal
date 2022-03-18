@@ -58,17 +58,20 @@ class ProcessDexFilesTest {
 
         val dexes = Dexes(outputDir, 14)
         val cd = dexes.lookup("androidx.appcompat.widget.Toolbar")
-        var testedPrivateTest = false
+        var testedPrivateTest = 0
         for (m in cd.methods) {
             if (m.name == "<init>") {
                 val codeAsStrings = PrettyPrint.prettyPrintMethod(m!!)
-                for (s in codeAsStrings) {
-                    println(s)
+                if (codeAsStrings.size == 218) {
+                    Assertions.assertTrue(codeAsStrings[115].contains("INVOKE_VIRTUAL_RANGE"))
+
+                    testedPrivateTest++
                 }
+
             }
         }
 
-        //Assertions.assertEquals(true, testedPrivateTest)
+        Assertions.assertEquals(1, testedPrivateTest)
         outputDir.deleteRecursively()
     }
 
